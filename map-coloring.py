@@ -14,6 +14,8 @@ from matplotlib.colors import to_hex
 
 
 import networkx as nx
+# Disable the PyplotGlobalUseWarning
+st.set_option('deprecation.showPyplotGlobalUse', False)
 
 # Define regions and edges
 regions = ['LaiChau', 'DienBien', 'SonLa', 'HoaBinh', 'HaNoi', 'HaiPhong', 
