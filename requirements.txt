@@ -1,3 +1,6 @@
 streamlit==1.33.0
 streamlit-option-menu==0.3.2
 python-constraint
+networkx==3.1
+matplotlib==3.7.1
+matplotlib-inline==0.1.6
