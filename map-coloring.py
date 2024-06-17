@@ -2,8 +2,6 @@
 # coding: utf-8
 
 # In[5]:
-
-
 import streamlit as st
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -11,13 +9,11 @@ from matplotlib.colors import to_hex
 
 
 # In[12]:
-
-
 import networkx as nx
 # Disable the PyplotGlobalUseWarning
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
-# Define regions and edges
+# Xác định vùng và biên
 regions = [f'A{i}' for i in range(1, 21)]
 edges = [
     ('A1', 'A2'), ('A2', 'A3'), ('A3', 'A4'), ('A4', 'A5'), ('A5', 'A6'),
@@ -31,7 +27,7 @@ edges = [
 ]
 colors = ['Red', 'Green', 'Blue']
 
-# Create graph
+# tạo map
 def create_graph(regions, edges):
     G = nx.Graph()
     G.add_nodes_from(regions)
@@ -44,13 +40,14 @@ pos = nx.spring_layout(G, seed=42)
 
 # In[13]:
 
-
+# kiểm tra xem việc gán màu cụ thể cho một nút có hợp lệ hay không
 def is_valid_coloring(node, color, assignment, graph):
     for neighbor in graph.neighbors(node):
         if neighbor in assignment and assignment[neighbor] == color:
             return False
     return True
-
+    
+# áp dụng backtracking algorithm
 def backtracking(assignment, graph, regions, colors):
     if len(assignment) == len(regions):
         return assignment
@@ -68,26 +65,25 @@ def backtracking(assignment, graph, regions, colors):
 
     return None
 
+
 # In[15]:
-
-
 import streamlit as st
 import matplotlib.pyplot as plt
 from matplotlib.colors import to_hex
 
-# Streamlit app
+# demo trên streamlit share
 st.title('Map Coloring Problem')
 
-# Game instructions
+# giải thích cách làm
 st.markdown("""
-### How to Play:
+### How to do:
 1. Select a color for each region from the dropdown menus.
 2. Ensure that no two adjacent regions have the same color.
 3. Click "Validate Coloring" to check if your coloring is valid.
 4. Click "Color the Map Automatically" to let the app color the map for you.
 """)
 
-# User inputs
+# đầu vào
 assignments = {}
 cols = st.columns(4)
 for idx, region in enumerate(regions):
@@ -98,7 +94,7 @@ for idx, region in enumerate(regions):
         if color:
             assignments[region] = color
 
-# Validate coloring
+# kiểm tra màu khi được fill vào có hợp lệ không?
 def validate_coloring():
     for region, color in assignments.items():
         if not is_valid_coloring(region, color, assignments, G):
@@ -111,7 +107,7 @@ if st.button('Validate Coloring'):
     else:
         st.error('Invalid coloring! Please try again.')
 
-# Draw the map
+# Vẽ bản đồ
 def draw_colored_map(graph, assignment):
     color_map = [assignment.get(node, '#FFFFFF') for node in graph.nodes]
     color_map = [to_hex(c) if c.startswith('#') else c for c in color_map]
@@ -121,6 +117,7 @@ def draw_colored_map(graph, assignment):
 
 st.pyplot(draw_colored_map(G, assignments))
 
+# giải bài toán tự động
 if st.button('Color the Map Automatically'):
     result = backtracking({}, G, regions, colors)
     if result:
@@ -129,11 +126,11 @@ if st.button('Color the Map Automatically'):
     else:
         st.error('Failed to color the map with the given constraints.')
 
-# Draw the map again with automatic coloring
+# Vẽ lại bản đồ bằng cách tô màu tự động
 st.pyplot(draw_colored_map(G, assignments))
 
 
-# Set the background color
+# Set màu nền demo
 st.markdown(
     """
     <style>
