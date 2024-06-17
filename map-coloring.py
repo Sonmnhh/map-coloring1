@@ -79,12 +79,24 @@ from matplotlib.colors import to_hex
 # Streamlit app
 st.title('Map Coloring Game')
 
+# Game instructions
+st.markdown("""
+### How to Play:
+1. Select a color for each region from the dropdown menus.
+2. Ensure that no two adjacent regions have the same color.
+3. Click "Validate Coloring" to check if your coloring is valid.
+4. Click "Color the Map Automatically" to let the app color the map for you.
+""")
+
 # User inputs
 assignments = {}
-for region in regions:
-    color = st.selectbox(f'Select color for {region}', ['', 'Red', 'Green', 'Blue'], key=f"selectbox_{region}")
-    if color:
-        assignments[region] = color
+col1, col2, col3, col4 = st.columns(4)
+for idx, region in enumerate(regions):
+    col = [col1, col2, col3, col4][idx % 4]
+    with col:
+        color = st.selectbox(f'Select color for {region}', ['', 'Red', 'Green', 'Blue'], key=f"selectbox_{region}", label_visibility="collapsed")
+        if color:
+            assignments[region] = color
 
 # Validate coloring
 def validate_coloring():
@@ -101,7 +113,6 @@ if st.button('Validate Coloring'):
 
 # Draw the map
 def draw_colored_map(graph, assignment):
-    pos = nx.spring_layout(graph)
     color_map = [assignment.get(node, '#FFFFFF') for node in graph.nodes]
     color_map = [to_hex(c) if c.startswith('#') else c for c in color_map]
     nx.draw(graph, pos, with_labels=True, node_color=color_map, node_size=2000, font_size=16, font_color='black')
@@ -120,6 +131,17 @@ if st.button('Color the Map Automatically'):
 # Draw the map again with automatic coloring
 st.pyplot(draw_colored_map(G, assignments))
 
+# Set the background color
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background-color: #f0f2f6;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 # In[ ]:
 
 
