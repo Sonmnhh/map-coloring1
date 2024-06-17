@@ -39,6 +39,7 @@ def create_graph(regions, edges):
     return G
 
 G = create_graph(regions, edges)
+pos = nx.spring_layout(G, seed=42)  # Freeze layout with a fixed seed
 
 
 # In[13]:
