@@ -39,7 +39,7 @@ def create_graph(regions, edges):
     return G
 
 G = create_graph(regions, edges)
-pos = nx.spring_layout(G, seed=42)  # Freeze layout with a fixed seed
+pos = nx.spring_layout(G, seed=42)
 
 
 # In[13]:
@@ -68,7 +68,6 @@ def backtracking(assignment, graph, regions, colors):
 
     return None
 
-
 # In[15]:
 
 
@@ -77,7 +76,7 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import to_hex
 
 # Streamlit app
-st.title('Map Coloring Game')
+st.title('Map Coloring Problem')
 
 # Game instructions
 st.markdown("""
@@ -94,7 +93,7 @@ cols = st.columns(4)
 for idx, region in enumerate(regions):
     col = cols[idx % 4]
     with col:
-        st.write(region)
+        st.markdown(f"#### {region}")
         color = st.selectbox(f'Select color for {region}', ['', 'Red', 'Green', 'Blue'], key=f"selectbox_{region}")
         if color:
             assignments[region] = color
@@ -116,6 +115,7 @@ if st.button('Validate Coloring'):
 def draw_colored_map(graph, assignment):
     color_map = [assignment.get(node, '#FFFFFF') for node in graph.nodes]
     color_map = [to_hex(c) if c.startswith('#') else c for c in color_map]
+    plt.figure(figsize=(10, 10))
     nx.draw(graph, pos, with_labels=True, node_color=color_map, node_size=2000, font_size=16, font_color='black')
     plt.show()
 
@@ -132,6 +132,7 @@ if st.button('Color the Map Automatically'):
 # Draw the map again with automatic coloring
 st.pyplot(draw_colored_map(G, assignments))
 
+
 # Set the background color
 st.markdown(
     """
@@ -139,10 +140,14 @@ st.markdown(
     .stApp {
         background-color: #f0f2f6;
     }
+    .block-container {
+        padding-top: 1rem;
+    }
     </style>
     """,
     unsafe_allow_html=True
 )
+
 # In[ ]:
 
 
