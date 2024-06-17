@@ -18,24 +18,16 @@ import networkx as nx
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
 # Define regions and edges
-regions = ['LaiChau', 'DienBien', 'SonLa', 'HoaBinh', 'HaNoi', 'HaiPhong', 
-           'QuangNinh', 'LangSon', 'ThaiNguyen', 'PhuTho', 'YenBai']
+regions = [f'A{i}' for i in range(1, 21)]
 edges = [
-    ('LaiChau', 'DienBien'), 
-    ('DienBien', 'SonLa'), 
-    ('SonLa', 'HoaBinh'), 
-    ('HoaBinh', 'HaNoi'), 
-    ('HaNoi', 'HaiPhong'), 
-    ('HaiPhong', 'QuangNinh'), 
-    ('QuangNinh', 'LangSon'), 
-    ('LangSon', 'ThaiNguyen'), 
-    ('ThaiNguyen', 'PhuTho'), 
-    ('PhuTho', 'YenBai'), 
-    ('YenBai', 'LaiChau'), 
-    ('LaiChau', 'SonLa'), 
-    ('SonLa', 'HaNoi'), 
-    ('HaNoi', 'QuangNinh'), 
-    ('QuangNinh', 'ThaiNguyen')
+    ('A1', 'A2'), ('A2', 'A3'), ('A3', 'A4'), ('A4', 'A5'), ('A5', 'A6'),
+    ('A6', 'A7'), ('A7', 'A8'), ('A8', 'A9'), ('A9', 'A10'), ('A10', 'A11'),
+    ('A11', 'A12'), ('A12', 'A13'), ('A13', 'A14'), ('A14', 'A15'), ('A15', 'A16'),
+    ('A16', 'A17'), ('A17', 'A18'), ('A18', 'A19'), ('A19', 'A20'), ('A20', 'A1'),
+    ('A1', 'A5'), ('A5', 'A10'), ('A10', 'A15'), ('A15', 'A20'), ('A2', 'A7'),
+    ('A7', 'A12'), ('A12', 'A17'), ('A17', 'A2'), ('A3', 'A8'), ('A8', 'A13'),
+    ('A13', 'A18'), ('A18', 'A3'), ('A4', 'A9'), ('A9', 'A14'), ('A14', 'A19'),
+    ('A19', 'A4'), ('A6', 'A11'), ('A11', 'A16'), ('A16', 'A6')
 ]
 colors = ['Red', 'Green', 'Blue']
 
@@ -116,6 +108,16 @@ def draw_colored_map(graph, assignment):
 
 st.pyplot(draw_colored_map(G, assignments))
 
+if st.button('Color the Map Automatically'):
+    result = backtracking({}, G, regions, colors)
+    if result:
+        assignments = result
+        st.success('The map has been colored successfully.')
+    else:
+        st.error('Failed to color the map with the given constraints.')
+
+# Draw the map again with automatic coloring
+st.pyplot(draw_colored_map(G, assignments))
 
 # In[ ]:
 
