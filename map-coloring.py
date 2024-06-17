@@ -90,11 +90,12 @@ st.markdown("""
 
 # User inputs
 assignments = {}
-col1, col2, col3, col4 = st.columns(4)
+cols = st.columns(4)
 for idx, region in enumerate(regions):
-    col = [col1, col2, col3, col4][idx % 4]
+    col = cols[idx % 4]
     with col:
-        color = st.selectbox(f'Select color for {region}', ['', 'Red', 'Green', 'Blue'], key=f"selectbox_{region}", label_visibility="collapsed")
+        st.write(region)
+        color = st.selectbox(f'Select color for {region}', ['', 'Red', 'Green', 'Blue'], key=f"selectbox_{region}")
         if color:
             assignments[region] = color
 
